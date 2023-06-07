@@ -18,13 +18,12 @@ class CreateAssessmentController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $error = Validator::make($request->all(),[
-                    'judul' => 'required',
-                    'waktu_buat' => 'required',
-                    'waktu_buat' => 'required',
-                ])->getMessageBag()->getMessages();
-        
-        if($error){
+        $error = Validator::make($request->all(), [
+            'judul' => 'required',
+            'waktu_buat' => 'required',
+        ])->getMessageBag()->getMessages();
+
+        if ($error) {
             return response()->json([
                 'success' => false,
                 'msg' => 'data tidak sesuai.',
@@ -37,6 +36,7 @@ class CreateAssessmentController extends Controller
         $assessment = new Assessment();
         $assessment->judul = $request->judul;
         $assessment->waktu_buat = $request->waktu_buat;
+        $assessment->waktu_berakhir = date('Y-m-d', strtotime($assessment->waktu_buat . ' + 4 days'));;
         $assessment->user_id = $user->id;
         $assessment->save();
 

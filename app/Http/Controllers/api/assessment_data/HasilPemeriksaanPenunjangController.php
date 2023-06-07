@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\assessment;
+namespace App\Http\Controllers\api\assessment_data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
+use App\Models\HasilPemeriksaanPenunjang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class FilterAssessmentController extends Controller
+class HasilPemeriksaanPenunjangController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,7 +18,7 @@ class FilterAssessmentController extends Controller
     public function __invoke(Request $request)
     {
         $error = Validator::make($request->all(), [
-            'date' => 'required|date',
+            'identitas_pasien_id' => 'required',
         ])->getMessageBag()->getMessages();
 
         if ($error) {
@@ -29,13 +29,19 @@ class FilterAssessmentController extends Controller
             ]);
         }
 
-        $assessment = Assessment::with("user")->where(function ($q) use ($request) {
-            $q->whereDate('waktu_buat', '<=', $request->date);
-            $q->whereDate('waktu_berakhir', '>=', $request->date);
-        })->latest()->get();
+        $form = new  HasilPemeriksaanPenunjang();
+        $form->identitas_pasien_id = $request->identitas_pasien_id;
+        $form->laboratorium = $request->labolatorium;
+        $form->lainnya = $request->lainnya;
+        $form->rongent = $request->rongent;
+        $form->save();
+
         return response()->json([
             'success' => true,
-            'data' => $assessment
+            'msg' => [
+                $request->all(),
+                $form
+            ]
         ]);
     }
 }

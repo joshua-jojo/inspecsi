@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\assessment_job;
+namespace App\Http\Controllers\api\assessment_data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
+use App\Models\Nyeri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class FindAssessmentJobController extends Controller
+class NyeriController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,7 +18,7 @@ class FindAssessmentJobController extends Controller
     public function __invoke(Request $request)
     {
         $error = Validator::make($request->all(),[
-                    'assessment_id' => 'required|exists:assessments,id',
+                    'identitas_pasien_id' => 'required',
                 ])->getMessageBag()->getMessages();
         
         if($error){
@@ -28,12 +28,22 @@ class FindAssessmentJobController extends Controller
                 'error' => $error
             ]);
         }
+        $form = new Nyeri();
+        $form->status = $request->status == 'true';
+        $form->identitas_pasien_id = $request->identitas_pasien_id;
 
-        $assessment = Assessment::with(["assessment_job.user",'assessment_job.identitas_pasien'])->find($request->assessment_id);
-
+        if($form->status){
+            $form->durasi = $request->durasi;
+            $form->faktor = $request->faktor;
+            $form->kapan = $request->kapan;
+            $form->karakteristik = $request->karakteristik;
+            $form->lokasi = $request->lokasi;
+            $form->skala = $request->skala;
+        }
+        $form->save();
+        
         return response()->json([
             'success' => true,
-            'data' => $assessment
         ]);
     }
 }

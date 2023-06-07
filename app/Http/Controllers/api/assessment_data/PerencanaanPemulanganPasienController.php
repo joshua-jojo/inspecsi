@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\assessment;
+namespace App\Http\Controllers\api\assessment_data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
-use App\Models\AssessmentJob;
+use App\Models\PerencanaanPemulanganPasien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class MeAssessmentController extends Controller
+class PerencanaanPemulanganPasienController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -19,7 +18,7 @@ class MeAssessmentController extends Controller
     public function __invoke(Request $request)
     {
         $error = Validator::make($request->all(), [
-            'date' => 'required',
+            'identitas_pasien_id' => 'required',
         ])->getMessageBag()->getMessages();
 
         if ($error) {
@@ -29,21 +28,19 @@ class MeAssessmentController extends Controller
                 'error' => $error
             ]);
         }
-
-        $assessment =  AssessmentJob::with('assessment.user')->where('user_id', auth()->user()->id)->whereHas("assessment", function ($q) use ($request) {
-            if($request->date != "all"){
-                $q->whereDate('waktu_buat', '<=',$request->date);
-                $q->whereDate('waktu_berakhir', '>=',$request->date);
+        $opsi = $request->opsi;
+        if ($opsi) {
+            foreach ($opsi as $key => $value) {
+                $form = new PerencanaanPemulanganPasien();
+                $form->identitas_pasien_id = $request->identitas_pasien_id;
+                $form->opsi = $value;
+                $form->save();
             }
-        })->latest()->get();
+        }
 
-        $assessment = $assessment->map(function ($q) {
-            $data =  $q->assessment;
-            return $data;
-        });
+
         return response()->json([
             'success' => true,
-            'data' => $assessment
         ]);
     }
 }

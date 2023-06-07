@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\assessment;
+namespace App\Http\Controllers\api\assessment_data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
+use App\Models\Ekonomi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class FilterAssessmentController extends Controller
+class EkonomiController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,7 +18,7 @@ class FilterAssessmentController extends Controller
     public function __invoke(Request $request)
     {
         $error = Validator::make($request->all(), [
-            'date' => 'required|date',
+            'identitas_pasien_id' => 'required',
         ])->getMessageBag()->getMessages();
 
         if ($error) {
@@ -29,13 +29,15 @@ class FilterAssessmentController extends Controller
             ]);
         }
 
-        $assessment = Assessment::with("user")->where(function ($q) use ($request) {
-            $q->whereDate('waktu_buat', '<=', $request->date);
-            $q->whereDate('waktu_berakhir', '>=', $request->date);
-        })->latest()->get();
+        $form = new Ekonomi();
+        $form->identitas_pasien_id = $request->identitas_pasien_id;
+        $form->pembiayaan_kesehatan = $request->pembiayaan_kesehatan ?? '-';
+        $form->penanggung_jawab_pasien = $request->penanggung_jawab_pasien ?? '-';
+        $form->status_pekerjaaan = $request->status_pekerjaaan ?? '-';
+        $form->save();
+        
         return response()->json([
             'success' => true,
-            'data' => $assessment
         ]);
     }
 }

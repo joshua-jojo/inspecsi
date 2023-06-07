@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Assessment extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+    protected $hidden = ['created_at','updated_at'];
 
     public function user()
     {
@@ -17,6 +17,6 @@ class Assessment extends Model
 
     public function assessment_job()
     {
-        return $this->hasMany(AssessmentJob::class);
+        return $this->hasMany(AssessmentJob::class,'assessment_id','id');
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\assessment;
+namespace App\Http\Controllers\api\assessment_data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
+use App\Models\Alergi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class FilterAssessmentController extends Controller
+class AlergiController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,7 +18,7 @@ class FilterAssessmentController extends Controller
     public function __invoke(Request $request)
     {
         $error = Validator::make($request->all(), [
-            'date' => 'required|date',
+            'identitas_pasien_id' => 'required',
         ])->getMessageBag()->getMessages();
 
         if ($error) {
@@ -29,13 +29,19 @@ class FilterAssessmentController extends Controller
             ]);
         }
 
-        $assessment = Assessment::with("user")->where(function ($q) use ($request) {
-            $q->whereDate('waktu_buat', '<=', $request->date);
-            $q->whereDate('waktu_berakhir', '>=', $request->date);
-        })->latest()->get();
+        $form  = new Alergi();
+        $form->identitas_pasien_id = $request->identitas_pasien_id;
+        $form->status = $request->status == "true";
+        
+        if($form->status){
+            $form->reaksi_alergi = $request->reaksi_alergi;
+            $form->alergi = $request->alergi;
+        }
+
+        $form->save();
+
         return response()->json([
             'success' => true,
-            'data' => $assessment
         ]);
     }
 }

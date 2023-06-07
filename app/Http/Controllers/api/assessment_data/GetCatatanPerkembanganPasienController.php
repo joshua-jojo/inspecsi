@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\assessment_job;
+namespace App\Http\Controllers\api\assessment_data;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
+use App\Models\CatatanPerkembanganPasien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class FindAssessmentJobController extends Controller
+class GetCatatanPerkembanganPasienController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,11 +17,11 @@ class FindAssessmentJobController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $error = Validator::make($request->all(),[
-                    'assessment_id' => 'required|exists:assessments,id',
-                ])->getMessageBag()->getMessages();
-        
-        if($error){
+        $error = Validator::make($request->all(), [
+            'identitas_pasien_id' => 'required',
+        ])->getMessageBag()->getMessages();
+
+        if ($error) {
             return response()->json([
                 'success' => false,
                 'msg' => 'data tidak sesuai.',
@@ -29,11 +29,11 @@ class FindAssessmentJobController extends Controller
             ]);
         }
 
-        $assessment = Assessment::with(["assessment_job.user",'assessment_job.identitas_pasien'])->find($request->assessment_id);
+        $catatan = CatatanPerkembanganPasien::where('identitas_pasien_id',$request->identitas_pasien_id)->get();
 
         return response()->json([
             'success' => true,
-            'data' => $assessment
+            'data' => $catatan
         ]);
     }
 }
