@@ -36,7 +36,7 @@ class CreateAssessmentController extends Controller
         $assessment = new Assessment();
         $assessment->judul = $request->judul;
         $assessment->waktu_buat = $request->waktu_buat;
-        $assessment->waktu_berakhir = date('Y-m-d', strtotime($assessment->waktu_buat . ' + 4 days'));;
+        $assessment->waktu_berakhir = date('Y-m-d', strtotime($assessment->waktu_buat . ' + 3 days'));;
         $assessment->user_id = $user->id;
         $assessment->save();
 
