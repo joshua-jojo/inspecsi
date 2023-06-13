@@ -27,32 +27,32 @@ class RoleSeeder extends Seeder
 
         $user = new User();
         $user->name = "super admin";
-        $user->password = bcrypt(123123123);
-        $user->email = "superadmin@superadmin.com";
+        $user->password = bcrypt('superadmin');
+        $user->email = "superadmin@gmail.com";
         $user->role_id = 1;
         $user->save();
 
-        $user = new User();
-        $user->name = "admin";
-        $user->password = bcrypt(123123123);
-        $user->email = "admin@admin.com";
-        $user->role_id = 2;
-        $user->save();
+        // $user = new User();
+        // $user->name = "admin";
+        // $user->password = bcrypt(123123123);
+        // $user->email = "admin@admin.com";
+        // $user->role_id = 2;
+        // $user->save();
 
-        $user = new User();
-        $user->name = "Kepala Ruangan";
-        $user->password = bcrypt(123123123);
-        $user->email = "kepala@kepala.com";
-        $user->role_id = 3;
-        $user->save();
+        // $user = new User();
+        // $user->name = "Kepala Ruangan";
+        // $user->password = bcrypt(123123123);
+        // $user->email = "kepala@kepala.com";
+        // $user->role_id = 3;
+        // $user->save();
 
-        for ($i = 1; $i <= 20; $i++) {
-            $user = new User();
-            $user->name = "Ketua Tim $i";
-            $user->password = bcrypt(123123123);
-            $user->email = "ketua$i@ketua.com";
-            $user->role_id = 4;
-            $user->save();
-        }
+        // for ($i = 1; $i <= 20; $i++) {
+        //     $user = new User();
+        //     $user->name = "Ketua Tim $i";
+        //     $user->password = bcrypt(123123123);
+        //     $user->email = "ketua$i@ketua.com";
+        //     $user->role_id = 4;
+        //     $user->save();
+        // }
     }
 }
