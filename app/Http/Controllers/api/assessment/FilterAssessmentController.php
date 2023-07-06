@@ -29,7 +29,7 @@ class FilterAssessmentController extends Controller
             ]);
         }
 
-        $assessment = Assessment::with("user")->where(function ($q) use ($request) {
+        $assessment = Assessment::with("user",'assessment_job.user','assessment_job.identitas_pasien')->where(function ($q) use ($request) {
             $q->whereDate('waktu_buat', '<=', $request->date);
             $q->whereDate('waktu_berakhir', '>=', $request->date);
         })->latest()->get();

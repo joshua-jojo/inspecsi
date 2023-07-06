@@ -16,7 +16,7 @@ class AllAssessmentController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $assessment = Assessment::with("user")->latest()->get();
+        $assessment = Assessment::with("user",'assessment_job.user','assessment_job.identitas_pasien')->latest()->get();
 
         return response()->json([
             'success' => true,

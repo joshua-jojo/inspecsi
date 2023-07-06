@@ -30,15 +30,17 @@ class MeAssessmentController extends Controller
             ]);
         }
 
-        $assessment =  AssessmentJob::with('assessment.user')->where('user_id', auth()->user()->id)->whereHas("assessment", function ($q) use ($request) {
-            if($request->date != "all"){
-                $q->whereDate('waktu_buat', '<=',$request->date);
-                $q->whereDate('waktu_berakhir', '>=',$request->date);
+        $assessment =  AssessmentJob::with('assessment.user','identitas_pasien')->where('user_id', auth()->user()->id)->whereHas("assessment", function ($q) use ($request) {
+            if ($request->date != "all") {
+                $q->whereDate('waktu_buat', '<=', $request->date);
+                $q->whereDate('waktu_berakhir', '>=', $request->date);
             }
         })->latest()->get();
 
         $assessment = $assessment->map(function ($q) {
             $data =  $q->assessment;
+            $data["complete"] = $q->complete;
+            $data["pasien"] = $q->identitas_pasien;
             return $data;
         });
         return response()->json([
