@@ -26,6 +26,8 @@ use App\Http\Controllers\api\auth\LoginController;
 use App\Http\Controllers\api\auth\RegisterController;
 use App\Http\Controllers\api\kepala_ruangan\SemuaKepalaRuanganController;
 use App\Http\Controllers\api\ketua_tim\SemuaKetuaTimController;
+use App\Http\Controllers\api\penilaian\PenilaianController;
+use App\Http\Controllers\api\penilaian\PenilaianGetController;
 use App\Http\Controllers\api\role\GetAllRoleController;
 use App\Http\Controllers\api\user\DeleteUserController;
 use App\Http\Controllers\api\user\GetAllUserController;
@@ -104,4 +106,8 @@ Route::group(['prefix' => 'assessmentjob'],function(){
 
 Route::group(['prefix' => 'archive'],function(){
     Route::post('all',AllArchiveController::class);
+});
+Route::group(['prefix' => 'penilaian'],function(){
+    Route::post('/',PenilaianController::class);
+    Route::post('/get',PenilaianGetController::class);
 });

@@ -19,6 +19,11 @@ class AssessmentJob extends Model
         return $this->hasOne(IdentitasPasien::class,'assessment_job_id','id');
     }
 
+    public function penilaian()
+    {
+        return $this->hasOne(Penilaian::class,'assessment_job_id','id');
+    }
+
     public function assessment()
     {
         return $this->belongsTo(Assessment::class);
