@@ -16,7 +16,16 @@ class AllAssessmentController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $assessment = Assessment::with("user",'assessment_job.user','assessment_job.identitas_pasien')->latest()->get();
+        $cari = !empty($request->cari) ? $request->cari : "";
+        $assessment = Assessment::with("user", 'assessment_job.user', 'assessment_job.identitas_pasien');
+        $assessment = $assessment->where("user_id", $request->user()->id);
+        $assessment = $assessment->where(function($q) use($cari){
+            $q->where("judul","like","%{$cari}%");
+            $q->orWhereHas("assessment_job.user",function($user) use($cari){
+                $user->where("name","like","%{$cari}%");
+            });
+        });
+        $assessment = $assessment->latest()->get();
 
         return response()->json([
             'success' => true,
