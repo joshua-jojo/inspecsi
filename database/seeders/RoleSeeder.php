@@ -39,12 +39,18 @@ class RoleSeeder extends Seeder
         // $user->role_id = 2;
         // $user->save();
 
-        // $user = new User();
-        // $user->name = "Kepala Ruangan";
-        // $user->password = bcrypt(123123123);
-        // $user->email = "kepala@kepala.com";
-        // $user->role_id = 3;
-        // $user->save();
+        $user = new User();
+        $user->name = "Ns. Fatmawati, S.Kep";
+        $user->email = "fatmai.bj161@gmail.com";
+        $user->password = bcrypt("fatmawati");
+        $user->role_id = 3;
+        $user->save();
+        $user = new User();
+        $user->name = "Osnila A.Md.Kep";
+        $user->email = "osnila.nila@yahoo.com";
+        $user->password = bcrypt("osnila");
+        $user->role_id = 3;
+        $user->save();
 
         // for ($i = 1; $i <= 20; $i++) {
         //     $user = new User();
