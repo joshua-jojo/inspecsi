@@ -28,6 +28,8 @@ use App\Http\Controllers\api\kepala_ruangan\SemuaKepalaRuanganController;
 use App\Http\Controllers\api\ketua_tim\SemuaKetuaTimController;
 use App\Http\Controllers\api\penilaian\PenilaianController;
 use App\Http\Controllers\api\penilaian\PenilaianGetController;
+use App\Http\Controllers\api\profil\UbahFotoProfilController;
+use App\Http\Controllers\api\profil\UbahProfilController;
 use App\Http\Controllers\api\role\GetAllRoleController;
 use App\Http\Controllers\api\user\DeleteUserController;
 use App\Http\Controllers\api\user\GetAllUserController;
@@ -50,64 +52,69 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'auth'],function(){
-    Route::post('register',RegisterController::class);
-    Route::post('login',LoginController::class);
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('register', RegisterController::class);
+    Route::post('login', LoginController::class);
 });
 
-Route::group(['prefix' => 'role'],function(){
-    Route::post('all',GetAllRoleController::class);
+Route::group(['prefix' => 'role'], function () {
+    Route::post('all', GetAllRoleController::class);
 });
 
-Route::group(['prefix' => 'user'],function(){
-    Route::post('all',GetAllUserController::class);
-    Route::post('delete',DeleteUserController::class);
-    Route::post('password/ubah',UbahPasswordUserController::class);
+Route::group(['prefix' => 'user'], function () {
+    Route::post('all', GetAllUserController::class);
+    Route::post('delete', DeleteUserController::class);
+    Route::post('password/ubah', UbahPasswordUserController::class);
 });
 
-Route::group(['prefix' => 'kepalaruangan'],function(){
-    Route::post('all',SemuaKepalaRuanganController::class);
+Route::group(['prefix' => 'kepalaruangan'], function () {
+    Route::post('all', SemuaKepalaRuanganController::class);
 });
 
-Route::group(['prefix' => 'ketuatim'],function(){
-    Route::post('all',SemuaKetuaTimController::class);
+Route::group(['prefix' => 'ketuatim'], function () {
+    Route::post('all', SemuaKetuaTimController::class);
 });
 
-Route::group(['prefix' => 'assessment'],function(){
-    Route::post('all',AllAssessmentController::class);
-    Route::post('create',CreateAssessmentController::class);
-    Route::post('filter',FilterAssessmentController::class);
-    Route::post('me',MeAssessmentController::class);
+Route::group(['prefix' => 'assessment'], function () {
+    Route::post('all', AllAssessmentController::class);
+    Route::post('create', CreateAssessmentController::class);
+    Route::post('filter', FilterAssessmentController::class);
+    Route::post('me', MeAssessmentController::class);
 });
 
-Route::group(['prefix' => 'assessment-data'],function(){
-    Route::post('identitas-pasien',IdentitasPasienController::class);
-    Route::post('riwayat-kesehatan',RiwayatKesehatanController::class);
-    Route::post('status-fisik-fisiologis',StatusFisikAtauFisiologisController::class);
-    Route::post('psiko-sosial-spiritual',PsikoSosialSpiritualController::class);
-    Route::post('ekonomi',EkonomiController::class);
-    Route::post('alergi',AlergiController::class);
-    Route::post('nyeri',NyeriController::class);
-    Route::post('kebutuhan-edukasi',KebutuhanEdukasiController::class);
-    Route::post('perencanaan-pemulangan-pasien',PerencanaanPemulanganPasienController::class);
-    Route::post('riwayat-penggunaan-obat',RiwayatPenggunaanObatController::class);
-    Route::post('hasil-pemeriksaan-penunjang',HasilPemeriksaanPenunjangController::class);
-    Route::post('analisis-data',AnalisisDataController::class);
-    Route::post('masalah-keperawatan',MasalahKeperawatanController::class);
-    Route::post('catatan-perkembangan-pasien',CatatanPerkembanganPasienController::class);
+Route::group(['prefix' => 'assessment-data'], function () {
+    Route::post('identitas-pasien', IdentitasPasienController::class);
+    Route::post('riwayat-kesehatan', RiwayatKesehatanController::class);
+    Route::post('status-fisik-fisiologis', StatusFisikAtauFisiologisController::class);
+    Route::post('psiko-sosial-spiritual', PsikoSosialSpiritualController::class);
+    Route::post('ekonomi', EkonomiController::class);
+    Route::post('alergi', AlergiController::class);
+    Route::post('nyeri', NyeriController::class);
+    Route::post('kebutuhan-edukasi', KebutuhanEdukasiController::class);
+    Route::post('perencanaan-pemulangan-pasien', PerencanaanPemulanganPasienController::class);
+    Route::post('riwayat-penggunaan-obat', RiwayatPenggunaanObatController::class);
+    Route::post('hasil-pemeriksaan-penunjang', HasilPemeriksaanPenunjangController::class);
+    Route::post('analisis-data', AnalisisDataController::class);
+    Route::post('masalah-keperawatan', MasalahKeperawatanController::class);
+    Route::post('catatan-perkembangan-pasien', CatatanPerkembanganPasienController::class);
 
-    Route::post('get-catatan-perkembangan-pasien',GetCatatanPerkembanganPasienController::class);
-    Route::post('get-data-pasien',GetDataPasienController::class);
+    Route::post('get-catatan-perkembangan-pasien', GetCatatanPerkembanganPasienController::class);
+    Route::post('get-data-pasien', GetDataPasienController::class);
 });
 
-Route::group(['prefix' => 'assessmentjob'],function(){
-    Route::post('find',FindAssessmentJobController::class);
+Route::group(['prefix' => 'assessmentjob'], function () {
+    Route::post('find', FindAssessmentJobController::class);
 });
 
-Route::group(['prefix' => 'archive'],function(){
-    Route::post('all',AllArchiveController::class);
+Route::group(['prefix' => 'archive'], function () {
+    Route::post('all', AllArchiveController::class);
 });
-Route::group(['prefix' => 'penilaian'],function(){
-    Route::post('/',PenilaianController::class);
-    Route::post('/get',PenilaianGetController::class);
+Route::group(['prefix' => 'penilaian'], function () {
+    Route::post('/', PenilaianController::class);
+    Route::post('/get', PenilaianGetController::class);
+});
+
+Route::group(["prefix" => "profil"], function () {
+    Route::post("/ubah-profil", UbahProfilController::class);
+    Route::post("/foto-profil", UbahFotoProfilController::class);
 });

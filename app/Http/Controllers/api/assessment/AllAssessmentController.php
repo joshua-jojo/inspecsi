@@ -18,11 +18,15 @@ class AllAssessmentController extends Controller
     {
         $cari = !empty($request->cari) ? $request->cari : "";
         $assessment = Assessment::with("user", 'assessment_job.user', 'assessment_job.identitas_pasien');
-        $assessment = $assessment->where("user_id", $request->user()->id);
-        $assessment = $assessment->where(function($q) use($cari){
-            $q->where("judul","like","%{$cari}%");
-            $q->orWhereHas("assessment_job.user",function($user) use($cari){
-                $user->where("name","like","%{$cari}%");
+        $role_id = $request->user()->role_id;
+        $user_id = $request->user()->id;
+        if ($role_id != 1) {
+            $assessment = $assessment->where("user_id", $user_id);
+        }
+        $assessment = $assessment->where(function ($q) use ($cari) {
+            $q->where("judul", "like", "%{$cari}%");
+            $q->orWhereHas("assessment_job.user", function ($user) use ($cari) {
+                $user->where("name", "like", "%{$cari}%");
             });
         });
         $assessment = $assessment->latest()->get();

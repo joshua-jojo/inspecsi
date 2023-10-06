@@ -41,6 +41,7 @@ class LoginController extends Controller
 
         $user = auth('api')->user()->load('role');
         $user->only('name', 'email', 'foto', 'role');
+        $user->foto = $user->foto ? url($user->foto) : null;
         return response()->json([
             'success' => true,
             'msg' => 'login berhasil',

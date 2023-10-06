@@ -18,6 +18,11 @@ class GetAllUserController extends Controller
     {
         $all_user = User::latest()->get();
 
+        $all_user->map(function ($q) {
+            $q->foto = $q->foto ? url($q->foto) : null;
+            return $q;
+        });
+
         return response()->json([
             'success' => true,
             'data' => $all_user
